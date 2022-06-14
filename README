@@ -1,0 +1,9 @@
+CC
+--
+
+A C Compiler is written in Haskell and C.
+
+RUN
+---
+$ stack build
+$ stack run test/test0.c
