@@ -6,7 +6,7 @@ cabal-version: 1.12
 
 name:           cc
 version:        0.1.0.0
-description:    Please see the README on GitHub at <https://github.com/githubuser/cc#readme>
+description:    Please see the README on GitHub at <https://github.com/githubuser/cc>
 homepage:       https://github.com/githubuser/cc#readme
 bug-reports:    https://github.com/githubuser/cc/issues
 author:         Author name here
@@ -16,7 +16,6 @@ license:        BSD3
 license-file:   LICENSE
 build-type:     Simple
 extra-source-files:
-    README.md
     ChangeLog.md
 
 source-repository head
