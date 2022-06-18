@@ -1,9 +1,10 @@
-CC
---
+CC - C Compiler 
+===============
 
-A C Compiler is written in Haskell and C.
+Outputs RISCV assembly.
 
-RUN
----
-$ stack build
-$ stack run test/test0.c
+Test
+----
+$ mkdir build && cd build
+$ cmake ..
+$ make
