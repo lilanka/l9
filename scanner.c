@@ -35,7 +35,7 @@ static Token error_token(Scanner* scanner, const char* message) {
 }
 
 // scanner advances by one position
-static char advance(Scanner* scanner) {
+static char next(Scanner* scanner) {
   scanner->current++;
   return scanner->current[-1];
 }
@@ -72,9 +72,9 @@ static void whitespaces(Scanner* scanner) {
     char c = current_char(scanner);
     switch (c) {
       case ' ': 
-      case '\t': advance(scanner); break;
-      case '\n': scanner->line++; advance(scanner); break;
-      case '\v': scanner->line += 2; advance(scanner); break;
+      case '\t': next(scanner); break;
+      case '\n': scanner->line++; next(scanner); break;
+      case '\v': scanner->line += 2; next(scanner); break;
       default: return;
     }
   }
@@ -85,17 +85,17 @@ static bool is_comment(Scanner* scanner) {
   char c = current_char(scanner);
   if (c == '/') {
     while (current_char(scanner) != '\n' && !is_end(scanner)) 
-      advance(scanner);
+      next(scanner);
     return true;
   } else if (c == '*') {
     while (!is_end(scanner)) {
       if (current_char(scanner) == '\n') 
         scanner->line++;
       if (current_char(scanner) == '*' && proceeding_char(scanner) == '/') {
-        advance(scanner);
+        next(scanner);
         return true;
       }
-      advance(scanner);
+      next(scanner);
     }    
   }
   return false;
@@ -106,14 +106,18 @@ static Token string(Scanner* scanner) {
   while (current_char(scanner) != '"' && !is_end(scanner)) {
     if (current_char(scanner) == '\n') 
       scanner->line++;
-      advance(scanner);
+      next(scanner);
   }
 
   if (is_end(scanner)) 
     return error_token(scanner, "Undefined string.");
 
-  advance(scanner);
+  next(scanner);
   return create_token(scanner, TSTRING);
+}
+
+static bool is_in_range(char a, char b, char c) {
+  return a <= c && b >= c;
 }
 
 static bool is_digit(char c) {
@@ -127,24 +131,73 @@ static bool is_alphabetic(char c) {
 // numerical tokens
 static Token number(Scanner* scanner) {
   while (is_digit(current_char(scanner)))
-    advance(scanner);
+    next(scanner);
 
   if (current_char(scanner) == '.' && is_digit(proceeding_char(scanner))) {
-    advance(scanner);
+    next(scanner);
     while (is_digit(current_char(scanner)))
-      advance(scanner);
+      next(scanner);
   }
   return create_token(scanner, TNUMBER); 
+}
+
+static TokenType keyword(Scanner* scanner, int start, int length, const char* rest, TokenType type) {
+  const int klength = KLENGTH(scanner);
+  if (klength == start + length && memcmp(scanner->current + start, rest, length) == 0) {
+    return type;
+  } 
+  return TID;
 }
 
 // identifier tokens
 static Token id(Scanner* scanner) {
   while (is_alphabetic(current_char(scanner)) || is_digit(current_char(scanner)))
-    advance(scanner);
+    next(scanner);
 
-  const int klength = scanner->current - scanner->start;  
+  const int klength = KLENGTH(scanner); 
   if (klength > KEYWORD_MAX_LENGTH || klength < KEYWORD_MIN_LENGTH)
     return create_token(scanner, TID);                            
+  switch (scanner->start[0]) {
+    case 'c': return create_token(scanner, keyword(scanner, 1, 3, "har", TCHAR));     
+    case 'e': return create_token(scanner, keyword(scanner, 1, 3, "lse", TELSE));     
+    case 'm': return create_token(scanner, keyword(scanner, 1, 3, "ain", TMAIN));     
+    case 'n': return create_token(scanner, keyword(scanner, 1, 3, "ull", TNULL));     
+    case 'p': return create_token(scanner, keyword(scanner, 1, 5, "rintf", TPRINT));     
+    case 'r': return create_token(scanner, keyword(scanner, 1, 5, "eturn", TRETURN));     
+    case 't': return create_token(scanner, keyword(scanner, 1, 3, "rue", TTRUE));     
+    case 'v': return create_token(scanner, keyword(scanner, 1, 3, "oid", TVOID));     
+    case 'w': return create_token(scanner, keyword(scanner, 1, 4, "hile", TWHILE));     
+    case 'd': {
+      if (klength > 1) {
+        switch (scanner->start[1]) {
+          case 'e': return create_token(scanner, keyword(scanner, 2, 4, "fine", TDEFINE));
+          case 'o': return create_token(scanner, keyword(scanner, 2, 4, "uble", TDOUBLE));
+        }
+      }  
+    }    
+    case 'i': {
+      if (klength > 1) {
+        switch (scanner->start[1]) {
+          case 'n': {
+            switch (scanner->start[2]) {
+              case 'c': return create_token(scanner, keyword(scanner, 3, 4, "lude", TINCLUDE));
+              case 't': return create_token(scanner, keyword(scanner, 3, 0, "", TINT));
+            }
+          }
+          case 'f': return create_token(scanner, keyword(scanner, 2, 0, "", TFOR));
+        }
+      }
+    }
+    case 'f': {
+      if (klength > 1) {
+        switch (scanner->start[1]) {
+          case 'a': return create_token(scanner, keyword(scanner, 2, 3, "lse", TFALSE));
+          case 'l': return create_token(scanner, keyword(scanner, 2, 3, "oat", TFLOAT));
+          case 'o': return create_token(scanner, keyword(scanner, 2, 1, "r", TFOR));
+        }
+      }
+    }
+  }
 }
 
 Token tokenize(Scanner* scanner) {
@@ -154,7 +207,7 @@ Token tokenize(Scanner* scanner) {
   if (is_end(scanner)) 
     return create_token(scanner, TEOF);
 
-  char c = advance(scanner);
+  char c = next(scanner);
   if (is_digit(c)) 
     return number(scanner);
   if (is_alphabetic(c))
@@ -167,6 +220,7 @@ Token tokenize(Scanner* scanner) {
     case '}': return create_token(scanner, TRBRACE);
     case ';': return create_token(scanner, TSEMICOLON); 
     case ',': return create_token(scanner, TCOMMA); 
+    case '#': return create_token(scanner, THASH);
     case '/': 
       if (!is_comment(scanner)) { 
         return create_token(scanner, TFSLASH); 

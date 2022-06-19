@@ -3,6 +3,7 @@
 
 #define KEYWORD_MIN_LENGTH 2
 #define KEYWORD_MAX_LENGTH 7
+#define KLENGTH(scanner) (scanner->current - scanner->start)
 
 typedef enum {
   // single character
@@ -10,9 +11,10 @@ typedef enum {
   TLBRACE, TRBRACE,
   TCOMMA, TMINUS, TPLUS,
   TSEMICOLON, TFSLASH, 
-  TBSLASH, TSTAR,
+  TBSLASH, TSTAR, THASH,
 
   // double character
+  TAND, TOR,
   TBANG, TBANG_EQ,
   TEQ, TEQ_EQ,
   TGREATER, TGREATER_EQ,
@@ -22,9 +24,9 @@ typedef enum {
   TID, TSTRING, TNUMBER,
 
   // keywords
-  TAND, TCHAR, TDOUBLE, TDEFINE,
+  TCHAR, TDOUBLE, TDEFINE,
   TELSE, TFALSE, TFLOAT, TFOR, TIF, 
-  TINT, TINCLUDE, TMAIN, TNULL, TOR, 
+  TINT, TINCLUDE, TMAIN, TNULL,
   TPRINT, TRETURN, TTRUE, TSTATIC,
   TSTRUCT, TVOID, TWHILE,
 

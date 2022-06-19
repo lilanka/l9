@@ -13,9 +13,9 @@ void compile(const char* content) {
     Token token = tokenize(scanner);
     if (token.line != line)
       line = token.line;
-    //printf("%2d, %i, %s\n", token.type, token.length, token.start);
    
     debug_tokens(token);
+    printf(" --- %i\n", token.length);
 
     if (token.type == TEOF) break;
   }
