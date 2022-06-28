@@ -26,15 +26,4 @@ void Code::code_write(uchar byte) {
   code_count++;
 }
 
-void Code::_D_code_print() {
-  for (int i = 0; i < code_count; i++) {
-    if (code[i] == OP_RETURN) {
-      std::cout << "OP_RETURN at " << i + 1 << std::endl;
-    } else if (code[i] == OP_ADD) {
-      std::cout << "OP_ADD at " << i + 1 << std::endl;
-    } else if (code[i] == OP_CONSTANT) {
-      std::cout << "OP_CONSTANT at " << i + 1 << std::endl;
-    }
-  }
-}
 }; // namespace L9

@@ -33,9 +33,6 @@ public:
   void code_write(uchar byte);
   // store consstant in the constant pool
   int pool_write(Value Value);
-  // print contents of code. for debuging
-  void _D_code_print();
-  void _D_pool_print();
 
 public:
   std::vector<uchar> code;

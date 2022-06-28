@@ -3,6 +3,7 @@
 #include "common.h"
 #include "code.h"
 #include "vm.h"
+#include "debug.h"
 
 using namespace L9;
 
@@ -20,7 +21,9 @@ int main(int argc, const char* argv[]) {
   if (er == EXECUTION_OK)
     std::cout << "Execution ok" << std::endl;
 
-  // for debugin
-  code._D_code_print();
+#ifdef DEBUG_TRACE_EXECUTION
+  Debug debug;
+  debug.debug_vm_code(code);
+#endif
   return 0;
 }
