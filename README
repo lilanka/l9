@@ -1,10 +1,11 @@
-CC - C Compiler 
-===============
+L9
 
-Outputs RISCV assembly.
+L9 is a fast dynamically typed, Object-oriented, and intrepreted language. 
+The compiler written from scratch having performance in mind. 
+Maybe in the future, compile down to assembly to get true performance.
 
-Test
-----
-$ mkdir build && cd build
-$ cmake ..
-$ make
+docs/ - Documentation of L9.
+test/ - Test files.
+libl9/ - The L9 standard library.
+
+It's good programming exercise to design high performance compiler from scratch.
