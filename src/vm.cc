@@ -5,23 +5,27 @@
 namespace L9 {
 
 ExecutionResult VM::execute(Code& code) {
-  //ip = std::make_unique<uchar*>(code.code[0]);  
-  ip = code.code[0];
-  std::cout << (OP_RETURN == *ip) << std::endl;
+  ip = std::make_unique<uchar>(code.code[0]);  
 #define READ_BYTE() (*ip++)
-  while (true) {
+#define READ_CONSTANT() (const_pool[READ_BYTE()])
 #define INSTRUCTION_EXECUTION()                   \
-({                                                \
-  uchar _L9_VM_Instruction;                       \
-  switch (_L9_VM_Instruction = READ_BYTE()) {     \
+  ({                                              \
+  switch (*ip) {                                  \
     case OP_RETURN: {                             \
-      return EXECUTION_OK;                        \ 
-    }                                             \ 
+      return EXECUTION_OK;                        \
+    }                                             \
+    case OP_CONSTANT: {                           \
+      Value _M_Constant = READ_CONSTANT();       \
+      break;                                      \
+    }                                             \
   }                                               \
-})                        
+  })                        
+  while (true) {
+    INSTRUCTION_EXECUTION();
   }
 
 #undef READ_BYTE
+#undef READ_CONSTANT
 #undef INSTRUCTION_EXECUTION
 }
 

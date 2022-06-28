@@ -38,15 +38,14 @@ public:
   void _D_pool_print();
 
 public:
-  std::vector<uchar*> code {nullptr}; 
+  std::vector<uchar> code;
+  std::vector<Value> const_pool;
 
 private:
   int code_count {0};
   int code_capacity {0};
   int pool_count {0};
   int pool_capacity {0};
-  
-  std::vector<Value*> const_pool {nullptr};
   std::unique_ptr<int> lines {nullptr};
 };
 

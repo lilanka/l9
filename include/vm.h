@@ -17,15 +17,14 @@ enum ExecutionResult {
 // since the sequence of code is already stared in 
 // code, we don't store the code in vm.
 // - ip: instruction about to be executed. 
-class VM : private Code {
+class VM : public Code {
 public:
   VM() {};  
   // execute instructions
   ExecutionResult execute(Code& code);
 
 private:
-  //std::unique_ptr<uchar*> ip {nullptr};
-  uchar* ip;
+  std::unique_ptr<uchar> ip {nullptr};
 };
 
 }; // namespace L9
