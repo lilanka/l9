@@ -30,20 +30,18 @@ class Code {
 public:
   Code() {};
   // store data to the code
-  void code_write(uchar byte);
+  void code_write(uchar byte, int line);
   // store consstant in the constant pool
   int pool_write(Value Value);
 
 public:
   std::vector<uchar> code;
   std::vector<Value> const_pool;
-
-private:
+  std::vector<int> lines;
   int code_count {0};
   int code_capacity {0};
   int pool_count {0};
   int pool_capacity {0};
-  std::unique_ptr<int> lines {nullptr};
 };
 
 }; // namespace L9

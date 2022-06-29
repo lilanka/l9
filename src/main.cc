@@ -7,14 +7,14 @@
 
 using namespace L9;
 
+#define DEBUG_TRACE_EXECUTION
+
 int main(int argc, const char* argv[]) {
   Code code;
-  code.code_write(OP_RETURN);
-  code.code_write(OP_ADD);
-  code.code_write(OP_SUB);
+  
   int constant = code.pool_write(1.2);
-  code.code_write(OP_CONSTANT);
-  code.code_write(constant);
+  code.code_write(OP_CONSTANT, 12);
+  code.code_write(OP_RETURN, 12);
 
   VM vm;
   ExecutionResult er = vm.execute(code);

@@ -16,7 +16,8 @@ enum ExecutionResult {
 // the virtual machine
 // since the sequence of code is already stared in 
 // code, we don't store the code in vm.
-// - ip: instruction about to be executed. 
+// - ip: instruction about to be exectued 
+// - cip: constant pool value about to be executed
 class VM : public Code {
 public:
   VM() {};  
@@ -25,6 +26,7 @@ public:
 
 private:
   std::unique_ptr<uchar> ip {nullptr};
+  std::unique_ptr<Value> cip {nullptr};
 };
 
 }; // namespace L9

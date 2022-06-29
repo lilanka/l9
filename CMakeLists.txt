@@ -5,6 +5,7 @@ add_executable(cc
   src/main.cc
   src/code.cc
   src/vm.cc
+  src/debug.cc
 )
 
 include_directories(
