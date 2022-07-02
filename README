@@ -1,8 +1,11 @@
 L9
 
-L9 is a fast dynamically typed, Object-oriented, and intrepreted language. 
+(in progress)
+L9 is a dynamically typed, Object-oriented, and intrepreted language. 
 The compiler written from scratch having performance in mind. 
 Maybe in the future, compile down to assembly to get true performance.
+
+Intrepreter is based on register-based bytecode instruction set.
 
 docs/ - Documentation of L9.
 test/ - Test files.

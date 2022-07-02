@@ -18,10 +18,16 @@ enum ExecutionResult {
 // code, we don't store the code in vm.
 // - ip: instruction about to be exectued 
 // - cip: constant pool value about to be executed
+// todo:
+//  - store intermediate values, register allocation method.
+//  - maybe https://cfallin.org/blog/2022/06/09/cranelift-regalloc2/
 class VM : public Code {
 public:
   VM() {};  
-  // execute instructions
+  // intrepret instructions
+  ExecutionResult intrepret(const char* source);
+
+private:
   ExecutionResult execute(Code& code);
 
 private:

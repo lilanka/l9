@@ -6,6 +6,8 @@ add_executable(cc
   src/code.cc
   src/vm.cc
   src/debug.cc
+  src/compiler.cc
+  src/scanner.cc
 )
 
 include_directories(

@@ -4,9 +4,6 @@
 
 namespace L9 {
 
-#define INCRESE_CAPACITY(capacity)  \
-  ((capacity) < 8 ? 8 : (capacity) * 2)
-
 int Code::pool_write(Value value) {
   if (pool_count + 1 > pool_capacity) {
     pool_capacity = INCRESE_CAPACITY(pool_capacity);
