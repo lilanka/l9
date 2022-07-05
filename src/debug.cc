@@ -15,4 +15,10 @@ void Debug::debug_vm_code(Code& code) {
   }
 }
 
+void Debug::debug_token(Token& token) {
+  switch (token.type) {
+    case TokenType::TLBRACE: std::cout << "TLBRACE" << std::endl; break;
+  }
+}
+
 }; // namespace L9
