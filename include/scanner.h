@@ -23,8 +23,8 @@ enum class TokenType {
 };
 
 struct Token {
-  TokenType type;
-  const char* start;
+  TokenType type_;
+  const char* start_;
 };
 
 // scanner generates tokens
@@ -33,33 +33,29 @@ struct Token {
 // - line: line number of the current token
 class Scanner {
 public:
-  constexpr Scanner(const char* source): \
-    start{source}, curr{source}, line{1} {};
+  Scanner(const char* source) noexcept : start_{source}, curr_{source} {};
   // scan source 
   Token scan();
+  ~Scanner() = default;
 
 private:
-  // check end of source   
-  inline bool is_end();
   // generate tokens
-  inline Token tokanize(TokenType type);
-  // invalid token
-  inline Token invalid_token();
+  inline Token tokanize(const TokenType type) const;
+
+  inline bool is_end() const;
+  inline Token invalid_token() const;
+  inline bool is_character(const uchar c) const;
+
   // advance the current position by one
   inline uchar advance();
-  // check if character is equal
-  inline bool is_character(const uchar c);
   // get next character without advancing
-  inline uchar next();
-  // comments
+  inline uchar next() const;
   inline Token handle_comment();
-  // skip whitespaces
   inline void skip_whitespace();
 
-private:
-  const char* start;
-  const char* curr;
-  unsigned int line;
+  const char* start_;
+  const char* curr_;
+  unsigned int line_ {1};
 };
 
 }; // namespace L9

@@ -13,17 +13,16 @@ using namespace L9;
 
 void repl(VM& vm) {
   std::cout << "L9 Compiler" << std::endl;
-  while (true) {
-    std::string line;
-    std::cout << ">> ";
-    std::cin >> line;
+  std::string line;
+  do {
+    std::cout << ">>> ";
+  } while(std::getline(std::cin, line));
     //execute(line);
-  }
 }
 
 // map source file
 static const char* read_file(const char* fname) {
-  int fd = open(fname, O_RDONLY);
+  auto fd = open(fname, O_RDONLY);
   if (fd < 0)
     perror("mmap() open error");
 

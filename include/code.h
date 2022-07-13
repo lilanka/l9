@@ -28,20 +28,22 @@ enum Op {
 //    - memory efficient way on line information.
 class Code {
 public:
+  std::vector<uchar> code_;
+  std::vector<Value> const_pool_;
+  std::vector<int> lines_;
+  int code_count_ {0};
+  int code_capacity_ {0};
+  int pool_count_ {0};
+  int pool_capacity_ {0};
+
   Code() {};
   // store data to the code
-  void code_write(uchar byte, int line);
+  void code_write(const uchar byte, const int line);
   // store consstant in the constant pool
-  int pool_write(Value Value);
+  int pool_write(const Value Value);
+  ~Code() = default;
 
-public:
-  std::vector<uchar> code;
-  std::vector<Value> const_pool;
-  std::vector<int> lines;
-  int code_count {0};
-  int code_capacity {0};
-  int pool_count {0};
-  int pool_capacity {0};
+  
 };
 
 }; // namespace L9

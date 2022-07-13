@@ -25,14 +25,14 @@ class VM : public Code {
 public:
   VM() {};  
   // intrepret instructions
-  ExecutionResult intrepret(const char* source);
+  ExecutionResult intrepret(const char* source) const;
+  ~VM() = default;
 
 private:
   ExecutionResult execute(Code& code);
 
-private:
-  std::unique_ptr<uchar> ip {nullptr};
-  std::unique_ptr<Value> cip {nullptr};
+  std::unique_ptr<uchar> ip_ {nullptr};
+  std::unique_ptr<Value> cip_ {nullptr};
 };
 
 }; // namespace L9

@@ -4,34 +4,34 @@
 
 namespace L9 {
 
-inline bool Scanner::is_end() {
-  return *curr == '\0';
+inline bool Scanner::is_end() const {
+  return *curr_ == '\0';
 }
 
-inline Token Scanner::tokanize(TokenType type) {
+inline Token Scanner::tokanize(const TokenType type) const {
   Token token;
-  token.type = type;
-  token.start = start;
+  token.type_ = type;
+  token.start_ = start_;
   return token;
 }
 
 inline uchar Scanner::advance() {
-  curr++;
-  return curr[-1];
+  curr_++;
+  return curr_[-1];
 }
 
-inline Token Scanner::invalid_token() {
+inline Token Scanner::invalid_token() const {
   Token token;
-  token.type = TokenType::TINVALID;
-  token.start = nullptr;
+  token.type_ = TokenType::TINVALID;
+  token.start_ = nullptr;
   return token;
 }
 
-inline uchar Scanner::next() {
-  return *curr;
+inline uchar Scanner::next() const {
+  return *curr_;
 }
 
-inline bool Scanner::is_character(const uchar c) {
+inline bool Scanner::is_character(const uchar c) const {
   return next() == c;
 }
 
@@ -43,7 +43,7 @@ inline void Scanner::skip_whitespace() {
       case ' ':
       case '\r':
       case '\t': advance(); break;
-      case '\n': advance(); line++; break;
+      case '\n': advance(); line_++; break;
       default: return;
     } 
   }
@@ -51,10 +51,10 @@ inline void Scanner::skip_whitespace() {
 
 Token Scanner::scan() {
   skip_whitespace();
-  start = curr;    
+  start_ = curr_;    
   if (is_end()) 
     return tokanize(TokenType::TEOF);
-  char c = advance();
+  auto c = advance();
 
   switch (c) {
     case '(': return tokanize(TokenType::TLPAREN);
@@ -66,7 +66,7 @@ Token Scanner::scan() {
     case '-': return tokanize(TokenType::TMINUS);
     case '*': return tokanize(TokenType::TSTAR);
     case '/': {
-      if (next() != '/') {
+      if (next() != '/' || next() != '-') {
         return tokanize(TokenType::TSLASH);
       } else {
         return handle_comment();

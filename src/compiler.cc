@@ -6,10 +6,10 @@
 
 namespace L9 {
 
-void Compiler::compile(const char* source) {
+void Compiler::compile(const char* source) const {
   Scanner scanner{source};
 
-  int line = -1;
+  auto line = -1;
   while (true) {
     Token token = scanner.scan();  
 
