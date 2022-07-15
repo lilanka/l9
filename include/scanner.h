@@ -13,7 +13,7 @@ enum class TokenType {
   TBANG, TBANG_EQ, TEQ, TEQ_EQ, 
   TGREATER, TGREATER_EQ, TLESS, TLESS_EQ,
   // literals
-  TID, TSTRING, TNUMBER,
+  TIDENTIFIER, TSTRING, TNUMBER, TCOMMENT,
   // keywords
   TAND, TCLASS, TELSE, TFALSE, TFOR, TFN,
   TIF, TNONE, TOR, TPRINT, TRETURN, TTHIS,
@@ -45,13 +45,19 @@ private:
   inline bool is_end() const;
   inline Token invalid_token() const;
   inline bool is_character(const uchar c) const;
+  inline Token identifier_or_keyword();
 
   // advance the current position by one
   inline uchar advance();
   // get next character without advancing
   inline uchar next() const;
-  inline Token handle_comment();
+  // get the character after next character without advancing
+  inline uchar one_after_next() const;
+  inline Token single_line_comment();
+  inline Token multi_line_comment();
   inline void skip_whitespace();
+
+  inline bool in_range(uchar c, uchar lower, uchar upper) const;
 
   const char* start_;
   const char* curr_;

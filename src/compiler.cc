@@ -18,6 +18,9 @@ void Compiler::compile(const char* source) const {
     Debug debug;
     debug.debug_token(token);
 #endif
+
+    if (token.type_ == TokenType::TEOF)
+      break;
   }
 }
 
