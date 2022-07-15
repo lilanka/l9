@@ -12,6 +12,7 @@ inline Token Scanner::tokanize(const TokenType type) const {
   Token token;
   token.type_ = type;
   token.start_ = start_;
+  token.line_ = line_;
   return token;
 }
 
@@ -71,6 +72,23 @@ inline bool Scanner::in_range(uchar c, uchar lower, uchar upper) const {
   return c >= lower && c <= upper;
 } 
 
+inline Token Scanner::identifier_or_keyword() {
+  while (in_range(next(), 'a', 'z') || \
+        in_range(next(), 'A', 'Z') || \
+        in_range(next(), '1', '9'))
+    advance();
+
+  // change these valuses accordingly
+  // when new keywords are implemented 
+  const auto keyword_min_length = 2;
+  const auto keyword_max_length = 6;
+
+  const auto token_length = curr_ - start_;
+
+  if (token_length < keyword_min_length ||  
+      token_length > keyword_max_length)
+    return tokanize(TokenType::TIDENTIFIER);
+
 #define KEYWORDS(KEYWORD_GROUP, KEYWORD)  \
   KEYWORD_GROUP('a')                      \
   KEYWORD("and", TokenType::TAND)         \
@@ -98,23 +116,6 @@ inline bool Scanner::in_range(uchar c, uchar lower, uchar upper) const {
   KEYWORD_GROUP('w')                      \
   KEYWORD("while", TokenType::TWHILE) 
 
-inline Token Scanner::identifier_or_keyword() {
-  while (in_range(next(), 'a', 'z') || \
-        in_range(next(), 'A', 'Z') || \
-        in_range(next(), '1', '9'))
-    advance();
-
-  // change these valuses accordingly
-  // when new keywords are implemented 
-  const auto keyword_min_length = 2;
-  const auto keyword_max_length = 6;
-
-  const auto token_length = curr_ - start_;
-
-  if (token_length < keyword_min_length ||  
-      token_length > keyword_max_length)
-    return tokanize(TokenType::TIDENTIFIER);
-
   switch (start_[0]) {
     default:
 #define KEYWORD_GROUP_CASE(ch)        \
@@ -122,7 +123,7 @@ inline Token Scanner::identifier_or_keyword() {
     case ch:
 #define KEYWORD(keyword, token_type)                                    \
   {                                                                     \
-    const int keyword_length = sizeof(keyword) - 1;                     \
+    const auto keyword_length = sizeof(keyword) - 1;                    \
     if (token_length == keyword_length && start_[1] == keyword[1] &&    \
         (keyword_length <= 2 || start_[2] == keyword[2]) &&             \
         (keyword_length <= 3 || start_[3] == keyword[3]) &&             \
@@ -135,6 +136,7 @@ inline Token Scanner::identifier_or_keyword() {
   return tokanize(TokenType::TIDENTIFIER);
 #undef KEYWORDS
 #undef KEYWORD
+#undef KEYWORD_GROUP_CASE
 }
 
 Token Scanner::scan() {

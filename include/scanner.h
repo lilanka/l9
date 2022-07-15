@@ -25,6 +25,7 @@ enum class TokenType {
 struct Token {
   TokenType type_;
   const char* start_;
+  unsigned int line_;
 };
 
 // scanner generates tokens
@@ -33,6 +34,10 @@ struct Token {
 // - line: line number of the current token
 class Scanner {
 public:
+  const char* start_;
+  const char* curr_;
+  unsigned int line_ {1};
+
   Scanner(const char* source) noexcept : start_{source}, curr_{source} {};
   // scan source 
   Token scan();
@@ -58,10 +63,6 @@ private:
   inline void skip_whitespace();
 
   inline bool in_range(uchar c, uchar lower, uchar upper) const;
-
-  const char* start_;
-  const char* curr_;
-  unsigned int line_ {1};
 };
 
 }; // namespace L9

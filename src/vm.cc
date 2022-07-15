@@ -1,5 +1,6 @@
 #include "vm.h"
 #include "compiler.h"
+#include "code.h"
 
 namespace L9 {
 
@@ -26,10 +27,15 @@ ExecutionResult VM::execute(Code& code) {
 #undef INCREMENT_POOL
 }
 
-ExecutionResult VM::intrepret(const char* source) const {
+ExecutionResult VM::intrepret(const char* source) {
   Compiler compiler;
-  compiler.compile(source);
-  return EXECUTION_OK;
+  Code code;
+
+  if (!compiler.compile(source, code))
+    return EXECUTION_COMPILE_ERROR;
+
+  ExecutionResult result = execute(code);
+  return result;
 }
 
 }; // namespace L9

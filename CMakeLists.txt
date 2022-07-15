@@ -10,6 +10,7 @@ add_executable(cc
   src/debug.cc
   src/compiler.cc
   src/scanner.cc
+  src/parser.cc
 )
 
 include_directories(

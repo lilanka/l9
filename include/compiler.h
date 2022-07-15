@@ -3,6 +3,7 @@
 #include <memory>
 
 #include "common.h"
+#include "code.h"
 
 namespace L9 {
 
@@ -10,7 +11,7 @@ class Compiler {
 public:
   Compiler() {};
   // compile the source code
-  void compile(const char* source) const;
+  bool compile(const char* source, Code& code) const;
   ~Compiler() = default;
 };
 

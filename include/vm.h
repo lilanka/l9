@@ -25,7 +25,7 @@ class VM : public Code {
 public:
   VM() {};  
   // intrepret instructions
-  ExecutionResult intrepret(const char* source) const;
+  ExecutionResult intrepret(const char* source);
   ~VM() = default;
 
 private:
