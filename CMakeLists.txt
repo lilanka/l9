@@ -11,6 +11,7 @@ add_executable(cc
   src/compiler.cc
   src/scanner.cc
   src/parser.cc
+  src/codegen.cc
 )
 
 include_directories(

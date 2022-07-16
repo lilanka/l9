@@ -9,11 +9,11 @@ namespace L9 {
 
 typedef double Value;
 
-enum Op {
-  OP_ADD,
-  OP_SUB,
-  OP_CONSTANT,
-  OP_RETURN,
+enum class OpType {
+  OADD,
+  OSUB,
+  OCONSTANT,
+  ORETURN,
 };
 
 // bytecode is a series of instructions.
@@ -28,7 +28,7 @@ enum Op {
 //    - memory efficient way on line information.
 class Code {
 public:
-  std::vector<uchar> code_;
+  std::vector<OpType> code_;
   std::vector<Value> const_pool_;
   std::vector<int> lines_;
   int code_count_ {0};
@@ -38,7 +38,7 @@ public:
 
   Code() {};
   // store data to the code
-  void code_write(const uchar byte, const int line);
+  void code_write(const OpType byte, const int line);
   // store consstant in the constant pool
   int pool_write(const Value Value);
   ~Code() = default;

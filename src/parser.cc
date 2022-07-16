@@ -5,8 +5,19 @@
 
 namespace L9 {
 
-void Parser::error(Token& token, std::string message) const {
-  std::cout << "Error at line " << token.line_ << " position " << token.start_ << std::endl;
+void Parser::error(std::string message) {
+  if (panic_)
+    return;
+  panic_ = true;
+  std::cout << "Error at line " << curr_.line_ << " position " << curr_.start_ << std::endl;
+}
+
+void Parser::validate_token(TokenType type, std::string message) {
+  if (curr_.type_ == type) {
+    parse();
+    return;
+  }
+  error(message);
 }
 
 bool Parser::parse() {
@@ -18,7 +29,7 @@ bool Parser::parse() {
     if (curr_.type_ != TokenType::TINVALID) 
       break;
     
-    error(curr_, "Invalid token");
+    error("Invalid token");
   }
   std::cout << "passed "  << std::endl;
   return true;

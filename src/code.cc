@@ -14,7 +14,7 @@ int Code::pool_write(const Value value) {
   return pool_count_ - 1;
 }
 
-void Code::code_write(const uchar byte, const int line) {
+void Code::code_write(const OpType byte, const int line) {
   if (code_count_ + 1 > code_capacity_) {
     code_capacity_ = INCRESE_CAPACITY(code_capacity_);
     code_.reserve(code_capacity_);
